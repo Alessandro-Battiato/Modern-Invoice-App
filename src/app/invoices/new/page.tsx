@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
-export default function Home() {
+export default function CreateInvoice() {
     return (
         <main className="flex flex-col justify-center h-full gap-6 my-12 max-w-5xl mx-auto">
             <div className="flex justify-between">

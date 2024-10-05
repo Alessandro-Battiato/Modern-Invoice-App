@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 
-export default function Home() {
+export default function Dashboard() {
     return (
         <main className="flex flex-col justify-center h-full text-center gap-6 my-12 max-w-5xl mx-auto">
             <div className="flex justify-between">

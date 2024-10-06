@@ -1,6 +1,6 @@
-import { sql } from "drizzle-orm";
+"use client";
 
-import { db } from "@/db";
+import { SyntheticEvent, useState } from "react";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -9,14 +9,33 @@ import { Button } from "@/components/ui/button";
 
 import { createAction } from "../../../../actions";
 
-export default async function CreateInvoice() {
+export default function CreateInvoice() {
+    const [state, setState] = useState("ready");
+
+    async function handleOnSubmit(event: SyntheticEvent) {
+        event.preventDefault();
+
+        if (state === "pending") return;
+
+        setState("pending");
+
+        const target = event.target as HTMLFormElement;
+        const formData = new FormData(target);
+
+        await createAction(formData);
+    }
+
     return (
         <main className="flex flex-col justify-center h-full gap-6 my-12 max-w-5xl mx-auto">
             <div className="flex justify-between">
                 <h1 className="text-3xl font-semibold">Create Invoice</h1>
             </div>
 
-            <form action={createAction} className="grid gap-4 max-w-xs">
+            <form
+                onSubmit={handleOnSubmit}
+                action={createAction}
+                className="grid gap-4 max-w-xs"
+            >
                 <div>
                     <Label
                         htmlFor="namr"

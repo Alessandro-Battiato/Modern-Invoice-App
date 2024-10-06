@@ -7,16 +7,16 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
-export default async function CreateInvoice() {
-    const results = await db.execute(sql`SELECT current_database()`);
+import { createAction } from "../../../../actions";
 
+export default async function CreateInvoice() {
     return (
         <main className="flex flex-col justify-center h-full gap-6 my-12 max-w-5xl mx-auto">
             <div className="flex justify-between">
                 <h1 className="text-3xl font-semibold">Create Invoice</h1>
             </div>
 
-            <form className="grid gap-4 max-w-xs">
+            <form action={createAction} className="grid gap-4 max-w-xs">
                 <div>
                     <Label
                         htmlFor="namr"

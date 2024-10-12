@@ -1,11 +1,12 @@
 "use client";
 
-import { SyntheticEvent, useState } from "react";
+import { startTransition, SyntheticEvent, useState } from "react";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import SubmitButton from "@/components/ui/SubmitButton";
 
 import { createAction } from "../../../../actions";
 
@@ -16,13 +17,13 @@ export default function CreateInvoice() {
         event.preventDefault();
 
         if (state === "pending") return;
-
         setState("pending");
-
         const target = event.target as HTMLFormElement;
-        const formData = new FormData(target);
 
-        await createAction(formData);
+        startTransition(async () => {
+            const formData = new FormData(target);
+            await createAction(formData);
+        });
     }
 
     return (
@@ -72,9 +73,7 @@ export default function CreateInvoice() {
                     </Label>
                     <Textarea id="description" name="description"></Textarea>
                 </div>
-                <div>
-                    <Button className="w-full font-semibold">Submit</Button>
-                </div>
+                <SubmitButton />
             </form>
         </main>
     );

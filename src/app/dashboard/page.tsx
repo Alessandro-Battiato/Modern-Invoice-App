@@ -10,9 +10,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { db } from "@/db";
+import { Invoices } from "@/db/schema";
 import Link from "next/link";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+    const results = await db.select().from(Invoices);
     return (
         <main className="flex flex-col justify-center h-full text-center gap-6 my-12 max-w-5xl mx-auto">
             <div className="flex justify-between">
@@ -43,23 +46,56 @@ export default function Dashboard() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow>
-                        <TableCell className="p-4 font-medium">
-                            <span className="font-semibold">10/31/2024</span>
-                        </TableCell>
-                        <TableCell className="p-4 text-left">
-                            <span className="font-semibold">John Doe</span>
-                        </TableCell>
-                        <TableCell className="p-4 text-left">
-                            <span>johnDoe@planetexpress.com</span>
-                        </TableCell>
-                        <TableCell className="p-4 text-center">
-                            <Badge className="rounded-full">Open</Badge>
-                        </TableCell>
-                        <TableCell className="p-4 text-right">
-                            <span className="font-semibold">$250.00</span>
-                        </TableCell>
-                    </TableRow>
+                    {results.map((result) => {
+                        return (
+                            <TableRow key={result.id}>
+                                <TableCell className="p-0 font-medium">
+                                    <Link
+                                        href={`/invoices/${result.id}`}
+                                        className="font-semibold p-4 block"
+                                    >
+                                        {new Date(
+                                            results.createTs
+                                        ).toLocaleDateString()}
+                                    </Link>
+                                </TableCell>
+                                <TableCell className="p-0 text-left">
+                                    <Link
+                                        href={`/invoices/${result.id}`}
+                                        className="font-semibold p-4 block"
+                                    >
+                                        John Doe
+                                    </Link>
+                                </TableCell>
+                                <TableCell className="p-0 text-left">
+                                    <Link
+                                        className="p-4 block"
+                                        href={`/invoices/${result.id}`}
+                                    >
+                                        johnDoe@planetexpress.com
+                                    </Link>
+                                </TableCell>
+                                <TableCell className="p-0 text-center">
+                                    <Link
+                                        className="p-4 block"
+                                        href={`/invoices/${result.id}`}
+                                    >
+                                        <Badge className="rounded-full">
+                                            {result.status}
+                                        </Badge>
+                                    </Link>
+                                </TableCell>
+                                <TableCell className="p-0 text-right">
+                                    <Link
+                                        href={`/invoices/${result.id}`}
+                                        className="font-semibold p-4 block"
+                                    >
+                                        ${(result.value / 100).toFixed(2)}
+                                    </Link>
+                                </TableCell>
+                            </TableRow>
+                        );
+                    })}
                 </TableBody>
             </Table>
         </main>
